@@ -23,15 +23,15 @@ def get_user_numbers():
     numbers = []
     luckystars = []
     print('Enter numbers: ')
-    while len(numbers) != 5:
-        number=input().strip()
-        for num in number:
-            if not num.isdigit():
-                number=input(f'Number isnt a number').strip()
-            if  0 < num < 51 and num not in numbers:
-                numbers.append(num)
-            else:
-                number=input(f"Enter new number {num} is already there: ").strip()
+    number=input()
+    while True:
+        if number.isdecimal():
+            numbers.append(int(number))
+            if not ( "0" < number < "51"):
+                number=input('Number not between 1 and 51 try again: ')
+            if len(numbers) == 5:
+                break
+        number=input('Enter next number: ')
     print('Enter stars: ')
     while len(luckystars) != 2:
         lucky=input().strip()
