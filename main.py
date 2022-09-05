@@ -50,6 +50,9 @@ class Ticket:
     def get_bet_numbers(self):
         return self.bet_numbers
 
+    def get_bet_stars(self):
+        return self.bet_stars
+
     def __str__(self):
         # This is just a helper method to print the ticket. Not really needed
         return f'Numbers: {self.bet_numbers}\nStars: {self.bet_stars}'
@@ -102,7 +105,9 @@ if __name__ == '__main__':
                             console.print(e, style="bold red")
                             continue
 
-                console.print(ticket.bet_numbers)
+                console.line()
+                console.print(f'Numbers: {ticket.get_bet_numbers()}', style="bold green")
+                console.print(f'Stars: {ticket.get_bet_stars()}', style="bold green")
 
 
             case 2:
