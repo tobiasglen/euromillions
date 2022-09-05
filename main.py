@@ -50,7 +50,7 @@ def get_user_numbers():
                 else:    
                     stars=input('Enter next number: ')
                     luckystars.append(star)
-        if len(luckystars) != 2:
+        if len(luckystars) == 2:
             break
     return Bet(numbers,luckystars)
 
