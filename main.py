@@ -1,73 +1,64 @@
+import random
 from dataclasses import dataclass, field
 import os
+import rich
+from rich import table, prompt
+from rich.console import Console
+
+console = Console()
 
 
-@dataclass
-class Bet:
-    numbers: list[int] = field(default_factory=list)
-    stars: list[int] = field(default_factory=list)
 
-
-@dataclass
 class Ticket:
-    Bets: list[Bet] = field(default_factory=list)
+    def __init__(self):
+        self.bet_numbers = []
+        self.bet_stars = []
 
-    def __post__init(self):
-        return Bet
+    def insert_bet_numbers(self, bet_number):
+        # Perform validation on the bet numbers
+        # It must be an integer between 1 and 50 and must be unique
+        if not bet_number.isdigit():
+            raise ValueError("Bet number must be an integer")
+        if bet_number in self.bet_numbers:
+            raise ValueError("Bet number already exists")
+        if int(bet_number) < 1 or int(bet_number) > 50:
+            raise ValueError("Bet number must be between 1 and 50")
+        self.bet_numbers.append(bet_number)
 
+    def insert_bet_stars(self, bet_star):
+        # Perform validation on the bet stars
+        # It must be between 1 and 12 and must be unique
+        if bet_star in self.bet_stars:
+            raise ValueError("Bet star already exists")
+        if bet_star < 1 or bet_star > 12:
+            raise ValueError("Bet star must be between 1 and 12")
+        self.bet_stars.append(bet_star)
 
-options_menu = {1: 'Enter User Keys',
-                2: 'Option2',
-                3: 'Exit'}
+    def auto_generate_bet(self):
+        # This method will generate 5 unique random numbers between 1 and 50 and append them to the bet_numbers list
+        while len(self.bet_numbers) < 5:
+            bet_number = random.randint(1, 50)
+            if bet_number not in self.bet_numbers:
+                self.bet_numbers.append(bet_number)
 
+        # generate 2 unique random numbers between 1 and 12 and append them to the bet_stars list
+        while len(self.bet_stars) < 2:
+            bet_star = random.randint(1, 12)
+            if bet_star not in self.bet_stars:
+                self.bet_stars.append(bet_star)
 
-def print_menu():
-    for key in options_menu.keys():
-        print(key, "---", options_menu[key])
+    def get_bet_numbers(self):
+        return self.bet_numbers
 
-
-def get_user_numbers():
-    numbers = []
-    luckystars = []
-    print('Enter numbers: ')
-    number = input()
-    while True:
-        while not number.isdecimal():
-            number = input('Number not between 1 and 51 try again: ')
-        num = int(number)
-        if 0 < num < 51:
-            if num in numbers:
-                number = input(f"{num} already there try again: ")
-            else:
-                number = input('Enter next number: ')
-                numbers.append(num)
-        if len(numbers) == 5:
-            break
-    print('Enter stars: ')
-    stars = input()
-    while True:
-        while not stars.isdecimal():
-            stars = input('Number not between 1 and 51 try again: ')
-        star = int(stars)
-        if 0 < star < 13:
-            if star in luckystars:
-                stars = input(f"{star} already there try again: ")
-            else:
-                stars = input('Enter next number: ')
-                luckystars.append(star)
-        if len(luckystars) == 2:
-            break
-    return Bet(numbers, luckystars)
+    def __str__(self):
+        # This is just a helper method to print the ticket. Not really needed
+        return f'Numbers: {self.bet_numbers}\nStars: {self.bet_stars}'
 
 
-def insert_number_ticket(ticket):
-    bets = get_user_numbers()
-    ticket.Bets.append(bets)
-    print(f'Aposta {bets.numbers} {bets.stars}')
 
 
-def display_bets():
-    print(Bet.numbers, Bet.stars)
+initial_menu = {1: 'Make Ticket', 2: 'Exit'}
+
 
 
 def clear_screen():
@@ -78,36 +69,42 @@ def clear_screen():
 
 
 def print_menu():
-    for key in options_menu.keys():
-        print(key, "---", options_menu[key])
+    menu_table = table.Table(show_header=True, header_style="bold magenta", title="Menu")
+    menu_table.add_column("ID", justify="center")
+    menu_table.add_column("Option", justify="left")
+    menu_table.add_column("Description", justify="left")
+    for key, value in initial_menu.items():
+        menu_table.add_row(str(key), value, "None atm")
+    console.print(menu_table)
 
 
 if __name__ == '__main__':
-    ticket = Ticket()
     while True:
         print_menu()
-        option = None
-        while option not in options_menu.keys():
-            try:
-                option = int(input('Select option: '))
-                if option not in options_menu.keys():
-                    print(f'Enter a number between 1 and {len(options_menu)}')
-            except ValueError:
-                print('Invalid option')
+        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in initial_menu.keys()]))
+
 
         match option:
             case 1:
                 clear_screen()
-                insert_number_ticket(ticket)
-                option = int(input('Want to insert another ticket?: '))
-                if option != 1:
-                    exit()
-                elif option == 1:
-                    clear_screen()
-                    insert_number_ticket(ticket)
-            case 2:
-                clear_screen()
-                insert_number_ticket(ticket)
 
-            case 3:
+                ticket = Ticket()
+                if prompt.Confirm.ask("Do you want to auto-generate a random ticket?"):
+                    ticket.auto_generate_bet()
+                else:
+                    # Manually prompt the user to enter the numbers
+                    console.print("Enter numbers below:", style="bold yellow")
+                    while len(ticket.get_bet_numbers()) < 5:
+                        bet_number = prompt.Prompt.ask(f"Enter number {len(ticket.get_bet_numbers()) + 1}")
+                        try:
+                            ticket.insert_bet_numbers(bet_number)
+                        except ValueError as e:
+                            console.print(e, style="bold red")
+                            continue
+
+                console.print(ticket.bet_numbers)
+
+
+            case 2:
+                console.print("Exiting...", style="bold red")
                 exit()
