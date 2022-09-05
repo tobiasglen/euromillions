@@ -29,6 +29,8 @@ def get_user_numbers():
             if num.isdigit():
                 if num not in numbers:
                     numbers.append(num)
+                else:
+                    number=input(f"Enter new number {num} is already there: ").strip()
     print('Enter stars: ')
     while len(luckystars) != 2:
         lucky=input().strip()
@@ -36,22 +38,24 @@ def get_user_numbers():
             if luck.isdigit():
                 if luck not in luckystars:
                     luckystars.append(luck)
+                else:
+                    lucky=input(f"Enter new number {luck} is already there: ").strip()
     return Bet(numbers,luckystars)
 
 def insert_number_ticket(ticket):
     bets=get_user_numbers()
     ticket.Bets.append(bets)
-    print(f'Here\'s numbers={bets.numbers} and stars={bets.stars}')
+    print(f'Aposta {bets.numbers} {bets.stars}')
 
+def display_bets():
+    print(Bet.numbers,Bet.stars)
 
 def clear_screen():
-
-    # It is for MacOS and Linux(here, os.name is 'posix')
     if os.name == 'posix':
         _ = os.system('clear')
     else:
-        # It is for Windows platfrom
         _ = os.system('cls')
+
 def print_menu():
     for key in options_menu.keys():
         print(key,"---",options_menu[key])
@@ -79,4 +83,4 @@ if __name__=='__main__':
         elif option==3:
             exit()
         else:
-            option=int(input('Invalid, enter a number between 1 and 3: '))
+            option=int(input('Invalid, enter a number between 1 and 4: '))
