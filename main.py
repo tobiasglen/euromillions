@@ -87,29 +87,28 @@ if __name__ == '__main__':
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in initial_menu.keys()]))
 
 
-        match option:
-            case 1:
-                clear_screen()
+        if option == 1:
+            clear_screen()
 
-                ticket = Ticket()
-                if prompt.Confirm.ask("Do you want to auto-generate a random ticket?"):
-                    ticket.auto_generate_bet()
-                else:
-                    # Manually prompt the user to enter the numbers
-                    console.print("Enter numbers below:", style="bold yellow")
-                    while len(ticket.get_bet_numbers()) < 5:
-                        bet_number = prompt.Prompt.ask(f"Enter number {len(ticket.get_bet_numbers()) + 1}")
-                        try:
-                            ticket.insert_bet_numbers(bet_number)
-                        except ValueError as e:
-                            console.print(e, style="bold red")
-                            continue
+            ticket = Ticket()
+            if prompt.Confirm.ask("Do you want to auto-generate a random ticket?"):
+                ticket.auto_generate_bet()
+            else:
+                # Manually prompt the user to enter the numbers
+                console.print("Enter numbers below:", style="bold yellow")
+                while len(ticket.get_bet_numbers()) < 5:
+                    bet_number = prompt.Prompt.ask(f"Enter number {len(ticket.get_bet_numbers()) + 1}")
+                    try:
+                        ticket.insert_bet_numbers(bet_number)
+                    except ValueError as e:
+                        console.print(e, style="bold red")
+                        continue
 
-                console.line()
-                console.print(f'Numbers: {ticket.get_bet_numbers()}', style="bold green")
-                console.print(f'Stars: {ticket.get_bet_stars()}', style="bold green")
+            console.line()
+            console.print(f'Numbers: {ticket.get_bet_numbers()}', style="bold green")
+            console.print(f'Stars: {ticket.get_bet_stars()}', style="bold green")
 
 
-            case 2:
-                console.print("Exiting...", style="bold red")
-                exit()
+        elif option == 2:
+            console.print("Exiting...", style="bold red")
+            exit()
