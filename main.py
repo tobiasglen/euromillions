@@ -27,29 +27,27 @@ def get_user_numbers():
     while True:
         while not number.isdecimal():          
             number=input('Number not between 1 and 51 try again: ')
-        if number.isdecimal():
-            num=int(number)
-            if 0 < num < 51:
-                if num in numbers:
-                    number=input(f"{num} already there try again: ")
-                else:    
-                    number=input('Enter next number: ')
-                    numbers.append(num)
+        num=int(number)
+        if 0 < num < 51:
+            if num in numbers:
+                number=input(f"{num} already there try again: ")
+            else:    
+                number=input('Enter next number: ')
+                numbers.append(num)
         if len(numbers) == 5:
-            break
+           break
     print('Enter stars: ')
     stars=input()
     while True:
         while not stars.isdecimal():          
             stars=input('Number not between 1 and 51 try again: ')
-        if stars.isdecimal():
-            star=int(stars)
-            if 0 < star < 13:
-                if star in luckystars:
-                    stars=input(f"{star} already there try again: ")
-                else:    
-                    stars=input('Enter next number: ')
-                    luckystars.append(star)
+        star=int(stars)
+        if 0 < star < 13:
+            if star in luckystars:
+                stars=input(f"{star} already there try again: ")
+            else:   
+                stars=input('Enter next number: ')
+                luckystars.append(star)
         if len(luckystars) == 2:
             break
     return Bet(numbers,luckystars)
