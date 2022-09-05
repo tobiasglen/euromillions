@@ -26,16 +26,17 @@ def get_user_numbers():
     while len(numbers) != 5:
         number=input().strip()
         for num in number:
-            if num.isdigit():
-                if num not in numbers:
-                    numbers.append(num)
-                else:
-                    number=input(f"Enter new number {num} is already there: ").strip()
+            if not num.isdigit():
+                number=input(f'Number isnt a number').strip()
+            if  0 < num < 51 and num not in numbers:
+                numbers.append(num)
+            else:
+                number=input(f"Enter new number {num} is already there: ").strip()
     print('Enter stars: ')
     while len(luckystars) != 2:
         lucky=input().strip()
         for luck in lucky:
-            if luck.isdigit():
+            if luck.isnumeric():
                 if luck not in luckystars:
                     luckystars.append(luck)
                 else:
