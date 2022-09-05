@@ -25,22 +25,33 @@ def get_user_numbers():
     print('Enter numbers: ')
     number=input()
     while True:
+        while not number.isdecimal():          
+            number=input('Number not between 1 and 51 try again: ')
         if number.isdecimal():
-            numbers.append(int(number))
-            if not ( "0" < number < "51"):
-                number=input('Number not between 1 and 51 try again: ')
-            if len(numbers) == 5:
-                break
-        number=input('Enter next number: ')
+            num=int(number)
+            if 0 < num < 51:
+                if num in numbers:
+                    number=input(f"{num} already there try again: ")
+                else:    
+                    number=input('Enter next number: ')
+                    numbers.append(num)
+        if len(numbers) == 5:
+            break
     print('Enter stars: ')
-    while len(luckystars) != 2:
-        lucky=input().strip()
-        for luck in lucky:
-            if luck.isnumeric():
-                if luck not in luckystars:
-                    luckystars.append(luck)
-                else:
-                    lucky=input(f"Enter new number {luck} is already there: ").strip()
+    stars=input()
+    while True:
+        while not stars.isdecimal():          
+            stars=input('Number not between 1 and 51 try again: ')
+        if stars.isdecimal():
+            star=int(stars)
+            if 0 < star < 13:
+                if star in luckystars:
+                    stars=input(f"{star} already there try again: ")
+                else:    
+                    stars=input('Enter next number: ')
+                    luckystars.append(star)
+        if len(luckystars) != 2:
+            break
     return Bet(numbers,luckystars)
 
 def insert_number_ticket(ticket):
