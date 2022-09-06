@@ -102,7 +102,7 @@ def play_game():
                         new_bet=Bet()
                         new_bet.auto_generate_bet()
                         ticket.bets.append(new_bet)
-                        #console.print(new_bet)
+                    
                     console.rule("Your Bets", style="bold yellow")
 
                     bets_table = table.Table(show_header=True, header_style="bold magenta")
