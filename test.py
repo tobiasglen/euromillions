@@ -24,7 +24,7 @@ class Bet:
                 temp_star = random.randint(1, 12)
                 if temp_star not in self.winning_stars:
                     self.winning_stars.append(temp_star)
-    
+
     def auto_generate_bet(self):
 
             while len(self.bet_numbers) < 5:
@@ -36,18 +36,14 @@ class Bet:
                 temp_star = random.randint(1, 12)
                 if temp_star not in self.bet_stars:
                     self.bet_stars.append(temp_star)
-        
+
     def check_if_user_won(self):
         return None
 
 
 @dataclass
 class Ticket:
-<<<<<<< HEAD
     bets: list[Bet] = field(default_factory=list)
-=======
-    Bets: list[Bet] = field(default_factory=list)
->>>>>>> eb32cc11d02c63a3e58318138c9b773db03edc7a
 
 
 initial_menu = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Sair do Programa']}
@@ -93,20 +89,12 @@ if __name__ == '__main__':
             ticket = Ticket()
             if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
                 num_bets = prompt.Prompt.ask(f"Enter number of bets")
-<<<<<<< HEAD
                 for _ in range(int(num_bets)):
                     new_bet=Bet()
                     ticket.bets.append(new_bet)
                 console.print(ticket)
-=======
-                bets = []
-                for _ in range(int(num_bets)):
-                    new_bet=Bet()
-                    bets.append(new_bet)
-                console.print(bets)
->>>>>>> eb32cc11d02c63a3e58318138c9b773db03edc7a
 
-        
+
         elif option == 2:
             exit()
 
@@ -114,8 +102,4 @@ if __name__ == '__main__':
 #bets.winning_numbers()
 #ticket=Ticket()
 #ticket.Bets.append(bets)
-<<<<<<< HEAD
 #print(ticket.Bets)
-=======
-#print(ticket.Bets)
->>>>>>> eb32cc11d02c63a3e58318138c9b773db03edc7a
