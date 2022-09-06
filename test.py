@@ -11,6 +11,7 @@ console = Console()
 class Game:
     winning_numbers: list[int] = field(default_factory=list)
     winning_stars: list[int]  = field(default_factory=list)
+    
     def generate_winning_numbers(self):
         while len(self.winning_numbers) < 5:
             temp_number = random.randint(1, 50)
@@ -52,6 +53,8 @@ class Ticket:
 
 initial_menu = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Sair do Programa']}
 
+tickets_menu = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Voltar ao inicio']}
+
 prizes = {
       (5,2): {"label": "1st prize"},
       (5,1): {"label": "2nd prize"},
@@ -74,7 +77,7 @@ def clear_screen():
     else:
         _ = os.system('cls')
 
-def print_menu():
+def principal_menu():
     menu_table = table.Table(show_header=True, header_style="bold magenta", title="Menu")
     menu_table.add_column("ID", justify="center")
     menu_table.add_column("Opções", justify="left")
@@ -83,20 +86,33 @@ def print_menu():
         menu_table.add_row(str(key), value[0],value[1] )
     console.print(menu_table)
 
+def tickets_menu():
+    menu_table = table.Table(show_header=True, header_style="bold magenta", title="Menu")
+    menu_table.add_column("ID", justify="center")
+    menu_table.add_column("Opções", justify="left")
+    menu_table.add_column("Descrições", justify="left")
+    for key, value in tickets_menu.items():
+        menu_table.add_row(str(key), value[0],value[1] )
+    console.print(menu_table)
+
+def play_game():
+    game = Game()
+
 if __name__ == '__main__':
     while True:
-        print_menu()
-        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in initial_menu.keys()]))
+        principal_menu()
+        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in principal_menu.keys()]))
         if option == 1:
-            clear_screen()
-
-            ticket = Ticket()
-            if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
-                num_bets = prompt.Prompt.ask(f"Enter number of bets")
-                for _ in range(int(num_bets)):
-                    new_bet=Bet()
-                    ticket.bets.append(new_bet)
-                console.print(ticket)
+            play_game()
+            if option == 1:
+                tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in tickets_menu.keys()]))
+                ticket=Ticket()
+                if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
+                    num_bets = prompt.Prompt.ask(f"Enter number of bets")
+                    for _ in range(int(num_bets)):
+                        new_bet=Bet()
+                        ticket.bets.append(new_bet)
+                    console.print(ticket)
 
         
         elif option == 2:
