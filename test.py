@@ -96,27 +96,32 @@ def tickets_menu():
     console.print(menu_table)
 
 def play_game():
-    game = Game()
-
+    while True:
+        tickets_menu()
+        option = int(prompt.Prompt.ask("..."))
+        if option == 1:  # new ticket
+            ticket=Ticket()
+        elif option == 2:  # back to main menu
+            return
 if __name__ == '__main__':
     while True:
         principal_menu()
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_principal.keys()]))
         if option == 1:
             play_game()
-            if option == 1:
-                tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
-                ticket=Ticket()
-                if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
-                    num_bets = prompt.Prompt.ask(f"Enter number of bets")
-                    for _ in range(int(num_bets)):
-                        new_bet=Bet()
-                        ticket.bets.append(new_bet)
-                    console.print(ticket)
+        #    if option == 1:
+        #        tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
+        #        ticket=Ticket()
+        #        if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
+        #            num_bets = prompt.Prompt.ask(f"Enter number of bets")
+        #            for _ in range(int(num_bets)):
+        #                new_bet=Bet()
+        #                ticket.bets.append(new_bet)
+        #            console.print(ticket)
 
         
-        elif option == 2:
-            exit()
+        #elif option == 2:
+        #    exit()
 
 #bets=Bet()
 #bets.winning_numbers()
