@@ -111,11 +111,13 @@ def play_game():
                     bets_table.add_column("Stars", justify="left")
 
             
-                    #for i in range(len(num_bets)):
-                    #    bets_table.add_row(str(i + 1), str(Bet.bet_numbers),str(Bet.bet_stars))
-                    #console.print(bets_table)
-                    #console.line()
-                    console.print(ticket.bets[0])
+                    for i in range(int(num_bets)):
+                        bets_table.add_row(str(i + 1), str(ticket.bets[i].bet_numbers),str(ticket.bets[i].bet_stars))
+                        
+                    console.print(bets_table)
+                    console.line()
+
+
 
         elif option == 2:  
             return
