@@ -98,11 +98,11 @@ def play_game():
             ticket=Ticket()
             if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
                     num_bets = prompt.Prompt.ask(f"Enter number of bets")
-                    new_bet=Bet()
                     for _ in range(int(num_bets)):
+                        new_bet=Bet()
                         new_bet.auto_generate_bet()
                         ticket.bets.append(new_bet)
-                        console.print(new_bet)
+                        #console.print(new_bet)
                     console.rule("Your Bets", style="bold yellow")
 
                     bets_table = table.Table(show_header=True, header_style="bold magenta")
@@ -111,10 +111,11 @@ def play_game():
                     bets_table.add_column("Stars", justify="left")
 
             
-                    for i in range(len(num_bets)):
-                        bets_table.add_row(str(i + 1), str(new_bet.bet_numbers), str(new_bet.bet_stars))
-                    console.print(bets_table)
-                    console.line()
+                    #for i in range(len(num_bets)):
+                    #    bets_table.add_row(str(i + 1), str(Bet.bet_numbers),str(Bet.bet_stars))
+                    #console.print(bets_table)
+                    #console.line()
+                    console.print(ticket.bets[0])
 
         elif option == 2:  
             return
