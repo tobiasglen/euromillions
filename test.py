@@ -51,9 +51,9 @@ class Ticket:
 
 
 
-menu_principal = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Sair do Programa']}
+menu_principal = {1: ['Criar Tickets','Um ou mais Tickets'], 2: ['Sair','Sair do Programa']}
 
-menu_tickets = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Voltar ao inicio']}
+menu_tickets = {1: ['Criar Apostas','Uma ou mais Apostas'], 2: ['Sair','Voltar ao inicio']}
 
 prizes = {
       (5,2): {"label": "1st prize"},
@@ -98,7 +98,7 @@ def tickets_menu():
 def play_game():
     while True:
         tickets_menu()
-        option = int(prompt.Prompt.ask("..."))
+        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         if option == 1:  # new ticket
             ticket=Ticket()
         elif option == 2:  # back to main menu
@@ -109,7 +109,7 @@ if __name__ == '__main__':
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_principal.keys()]))
         if option == 1:
             play_game()
-        #    if option == 1:
+        
         #        tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         #        ticket=Ticket()
         #        if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
