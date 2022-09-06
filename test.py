@@ -13,48 +13,36 @@ class Game:
     winning_stars: list[int]  = field(default_factory=list)
     
     def generate_winning_numbers(self):
-        while len(self.winning_numbers) < 5:
-            temp_number = random.randint(1, 50)
-            if temp_number not in self.winning_numbers:
-                self.winning_numbers.append(temp_number)
-
-        while len(self.winning_stars) < 2:
-            temp_star = random.randint(1, 12)
-            if temp_star not in self.winning_stars:
-                self.winning_stars.append(temp_star)
+        self.winning_numbers,self.winning_stars=generate_valid_numbers()
 
 @dataclass
 class Bet:
     bet_numbers: list[int] = field(default_factory=list)
     bet_stars: list[int]  = field(default_factory=list)
-
     
     def auto_generate_bet(self):
-
-            while len(self.bet_numbers) < 5:
-                temp_bet = random.randint(1, 50)
-                if temp_bet not in self.bet_numbers:
-                    self.bet_numbers.append(temp_bet)
-
-            while len(self.bet_stars) < 2:
-                temp_star = random.randint(1, 12)
-                if temp_star not in self.bet_stars:
-                    self.bet_stars.append(temp_star)
+        self.bet_numbers,self.bet_stars=generate_valid_numbers()
         
     def check_if_user_won(self):
         return None
-    
-    def get_bet_numbers(self):
-        return self.bet_numbers
-
-    
-    def get_bet_stars(self):
-        return self.bet_stars
-
 
 @dataclass
 class Ticket:
-    bets: list[Bet] = field(default_factory=list)
+    bets: list[Bet] = field(default_factory=list) 
+
+def generate_valid_numbers():
+    numbers = []
+    stars = []
+    while len(numbers) < 5:
+        temp_bet = random.randint(1, 50)
+        if temp_bet not in numbers:
+            numbers.append(temp_bet)
+    while len(stars) < 2:
+        temp_star = random.randint(1, 12)
+        if temp_star not in stars:
+            stars.append(temp_star)
+    return numbers,stars
+
 
 
 
@@ -106,7 +94,7 @@ def play_game():
     while True:
         tickets_menu()
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
-        if option == 1:  # new ticket
+        if option == 1:
             ticket=Ticket()
             if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
                     num_bets = prompt.Prompt.ask(f"Enter number of bets")
@@ -122,14 +110,14 @@ def play_game():
                     bets_table.add_column("Numbers", justify="left")
                     bets_table.add_column("Stars", justify="left")
 
-            # Loop through the bet numbers and stars and print them
+            
                     for i in range(len(num_bets) ):
                         bets_table.add_row(str(i + 1), str(new_bet.bet_numbers[i]), str(new_bet.bet_stars[i]))
 
                     console.print(bets_table)
                     console.line()
 
-        elif option == 2:  # back to main menu
+        elif option == 2:  
             return
 if __name__ == '__main__':
     while True:
