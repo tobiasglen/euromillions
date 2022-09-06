@@ -43,6 +43,13 @@ class Bet:
         
     def check_if_user_won(self):
         return None
+    
+    def get_bet_numbers(self):
+        return self.bet_numbers
+
+    
+    def get_bet_stars(self):
+        return self.bet_stars
 
 
 @dataclass
@@ -101,6 +108,30 @@ def play_game():
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         if option == 1:  # new ticket
             ticket=Ticket()
+            if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
+                    num_bets = prompt.Prompt.ask(f"Enter number of bets")
+                    for _ in range(int(num_bets)):
+                        new_bet=Bet()
+                        ticket.bets.append(new_bet)
+            
+            console.rule("Your Bets", style="bold yellow")
+
+            bets_table = table.Table(show_header=True, header_style="bold magenta")
+            bets_table.add_column("Bet", justify="center")
+            bets_table.add_column("Numbers", justify="left")
+            bets_table.add_column("Stars", justify="left")
+
+            # Get the bet numbers and stars
+            bet_numbers = Bet.get_bet_numbers()
+            bet_stars = Bet.get_bet_stars()
+
+            # Loop through the bet numbers and stars and print them
+            for i in range(len(bet_numbers)):
+                bets_table.add_row(str(i + 1), str(bet_numbers[i]), str(bet_stars[i]))
+
+            console.print(bets_table)
+            console.line()
+
         elif option == 2:  # back to main menu
             return
 if __name__ == '__main__':
@@ -112,16 +143,10 @@ if __name__ == '__main__':
         
         #        tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         #        ticket=Ticket()
-        #        if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
-        #            num_bets = prompt.Prompt.ask(f"Enter number of bets")
-        #            for _ in range(int(num_bets)):
-        #                new_bet=Bet()
-        #                ticket.bets.append(new_bet)
-        #            console.print(ticket)
-
+        #        
         
-        #elif option == 2:
-        #    exit()
+        elif option == 2:
+            exit()
 
 #bets=Bet()
 #bets.winning_numbers()
