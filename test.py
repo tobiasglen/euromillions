@@ -8,22 +8,25 @@ from rich.console import Console
 console = Console()
 
 @dataclass
+class Game:
+    winning_numbers: list[int] = field(default_factory=list)
+    winning_stars: list[int]  = field(default_factory=list)
+    def generate_winning_numbers(self):
+        while len(self.winning_numbers) < 5:
+            temp_number = random.randint(1, 50)
+            if temp_number not in self.winning_numbers:
+                self.winning_numbers.append(temp_number)
+
+        while len(self.winning_stars) < 2:
+            temp_star = random.randint(1, 12)
+            if temp_star not in self.winning_stars:
+                self.winning_stars.append(temp_star)
+
+@dataclass
 class Bet:
     bet_numbers: list[int] = field(default_factory=list)
     bet_stars: list[int]  = field(default_factory=list)
-    winning_numbers: list[int] = field(default_factory=list)
-    winning_stars: list[int]  = field(default_factory=list)
 
-    def generate_winning_numbers(self):
-            while len(self.winning_numbers) < 5:
-                temp_number = random.randint(1, 50)
-                if temp_number not in self.winning_numbers:
-                    self.winning_numbers.append(temp_number)
-
-            while len(self.winning_stars) < 2:
-                temp_star = random.randint(1, 12)
-                if temp_star not in self.winning_stars:
-                    self.winning_stars.append(temp_star)
     
     def auto_generate_bet(self):
 
@@ -44,6 +47,7 @@ class Bet:
 @dataclass
 class Ticket:
     bets: list[Bet] = field(default_factory=list)
+
 
 
 initial_menu = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Sair do Programa']}
