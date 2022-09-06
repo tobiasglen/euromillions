@@ -91,6 +91,7 @@ def tickets_menu():
     console.print(menu_table)
 
 def play_game():
+    Game.generate_winning_numbers
     while True:
         tickets_menu()
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
@@ -112,10 +113,12 @@ def play_game():
 
             
                     for i in range(int(num_bets)):
-                        bets_table.add_row(str(i + 1), str(ticket.bets[i].bet_numbers),str(ticket.bets[i].bet_stars))
-                        
+                        tickets_numbers='  '.join(str(x).ljust(3) for x in ticket.bets[i].bet_numbers)
+                        tickets_stars='  '.join(str(x).ljust(3) for x in ticket.bets[i].bet_stars)
+                        bets_table.add_row(str(i + 1), tickets_numbers,tickets_stars)
+
                     console.print(bets_table)
-                    console.line()
+                    #console.line()
 
 
 
