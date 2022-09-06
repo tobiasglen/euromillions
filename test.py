@@ -51,9 +51,9 @@ class Ticket:
 
 
 
-initial_menu = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Sair do Programa']}
+menu_principal = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Sair do Programa']}
 
-tickets_menu = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Voltar ao inicio']}
+menu_tickets = {1: ['Criar Talões','Um ou mais Tickets'], 2: ['Sair','Voltar ao inicio']}
 
 prizes = {
       (5,2): {"label": "1st prize"},
@@ -82,7 +82,7 @@ def principal_menu():
     menu_table.add_column("ID", justify="center")
     menu_table.add_column("Opções", justify="left")
     menu_table.add_column("Descrições", justify="left")
-    for key, value in initial_menu.items():
+    for key, value in menu_principal.items():
         menu_table.add_row(str(key), value[0],value[1] )
     console.print(menu_table)
 
@@ -91,7 +91,7 @@ def tickets_menu():
     menu_table.add_column("ID", justify="center")
     menu_table.add_column("Opções", justify="left")
     menu_table.add_column("Descrições", justify="left")
-    for key, value in tickets_menu.items():
+    for key, value in menu_tickets.items():
         menu_table.add_row(str(key), value[0],value[1] )
     console.print(menu_table)
 
@@ -101,11 +101,11 @@ def play_game():
 if __name__ == '__main__':
     while True:
         principal_menu()
-        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in principal_menu.keys()]))
+        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_principal.keys()]))
         if option == 1:
             play_game()
             if option == 1:
-                tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in tickets_menu.keys()]))
+                tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
                 ticket=Ticket()
                 if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
                     num_bets = prompt.Prompt.ask(f"Enter number of bets")
