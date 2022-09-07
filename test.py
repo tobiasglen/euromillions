@@ -99,9 +99,10 @@ def check_ticket_bets(ticket):
         bet_numbers = bet.bet_numbers
         bet_stars = bet.bet_stars
 
-#It will check the winning Game (numbers and stars) against the ticket
-#multiple bets. If ticket bet numbers are in Game numbers. If ticket
-#bet stars are in Game stars. By the amount there we award prizes.
+#A prize consists how many numbers and stars are common to the
+#Game winning key.(5,2) -> "1st prize", that means all numbers and stars
+#are in a winning bet.
+#A Ticket can consist of 1 to multiple winning bets.
 
 def check_if_user_won(ticket,game):
     
