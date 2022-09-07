@@ -92,18 +92,19 @@ def tickets_menu():
         menu_table.add_row(str(key), value[0],value[1] )
     console.print(menu_table)
 
-#It will check the winning Game (numbers and stars) against the ticket
-#multiple bets. If ticket bet numbers are in Game numbers. If ticket
-#bet stars are in Game stars. By the amount there we award prizes.
-
-def check_if_user_won(ticket,game):
+def check_ticket_bets(ticket):
     bet_numbers = 0
     bet_stars = 0
     for index,bet in enumerate(ticket.bets):
         bet_numbers = bet.bet_numbers
         bet_stars = bet.bet_stars
-        print(f"checking bet{index} for prizes:  {bet}")
-    return bet_numbers, bet_stars
+
+#It will check the winning Game (numbers and stars) against the ticket
+#multiple bets. If ticket bet numbers are in Game numbers. If ticket
+#bet stars are in Game stars. By the amount there we award prizes.
+
+def check_if_user_won(ticket,game):
+    
     
     #for num in range(len(numbers)):
     #    bet_numbers.append(numbers[num])
