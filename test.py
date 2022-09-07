@@ -96,8 +96,8 @@ def tickets_menu():
 #multiple bets. If ticket bet numbers are in Game numbers. If ticket
 #bet stars are in Game stars. By the amount there we award prizes.
 
-def check_if_user_won(ticket,Game):
-    for i in Ticket.bets:
+def check_if_user_won(ticket,game):
+    for i in ticket.bets:
         tickets_numbers='  '.join(str(x).ljust(3) for x in [i].bet_numbers)
         print(tickets_numbers)
     
