@@ -105,13 +105,22 @@ def check_ticket_bets(ticket):
 #A Ticket can consist of 1 to multiple winning bets.
 
 def check_if_user_won(ticket,game):
-    
-    
-    #for num in range(len(numbers)):
-    #    bet_numbers.append(numbers[num])
-    #for star in range(len(stars)):
-    #    bet_stars.append(numbers[star])
-    
+    winning_numbers=game.winning_numbers
+    winning_stars=game.winning_stars
+    bet_numbers = 0
+    bet_stars = 0
+    for index,bet in enumerate(ticket.bets):
+        bet_numbers = bet.bet_numbers
+        bet_stars = bet.bet_stars
+        result1 = set(bet_numbers) & set(winning_numbers)
+        result2 = set(bet_stars) & set(winning_stars)
+        result1_len = len(result1)
+        result2_len = len(result2)
+        if (result1_len,result2_len) in prizes:
+            p=prizes[(result1_len,result2_len)]
+            return (f'{p["label"]}')
+        else:
+            return (f"YOU LOST!")
 
 def play_game():
     game=Game()
@@ -148,7 +157,7 @@ def play_game():
         #    return
         elif option == 2:
             #exit()
-            console.print(check_if_user_won(ticket,0))
+            console.print(check_if_user_won(ticket,game))
             #for i,v in enumerate(ticket.bets):
             #    print(v.bet_numbers)
             #console.print(ticket)
