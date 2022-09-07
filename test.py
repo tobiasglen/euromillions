@@ -3,14 +3,27 @@ import random
 import os
 import rich
 from rich import table, prompt
+import time
+from rich.progress import track
 from rich.console import Console
 
 console = Console()
 
+
 class MyConfirm(prompt.Confirm):
+    validate_error_message = "[prompt.invalid]Por favor introduzir S ou N"
     choices=['s','n']
 
+class MyPrompt(prompt.PromptBase):
+    validate_error_message = "[prompt.invalid]Por favor entra um valor válido"
+    illegal_choice_message = (
+        "[prompt.invalid.choice]Por favor seleciona uma das opções disponíveis"
+    )
+    prompt_suffix = ": "
+
 MyConfirm = MyConfirm()
+MyPrompt = MyPrompt()
+
 @dataclass
 class Game:
     winning_numbers: list[int] = field(default_factory=list)
@@ -122,7 +135,7 @@ def check_if_user_won(ticket,game):
         result2_len = len(result2)
         if (result1_len,result2_len) in prizes:
             p=prizes[(result1_len,result2_len)]
-            return (f'{p["label"]}')
+            return (f'{p[0]}{p["label"]}')
         else:
             return (f"YOU LOST!")
 
@@ -131,17 +144,17 @@ def play_game():
     game.generate_winning_numbers()
     while True:
         tickets_menu()
-        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
+        option = int(MyPrompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         if option == 1:
             ticket=Ticket()
             #if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
             if MyConfirm.ask("Do you want to auto-generate a random ticket?", default=True):
-                    num_bets = prompt.Prompt.ask(f"Enter number of bets")
+                    num_bets = MyPrompt.ask(f"Enter number of bets")
                     for _ in range(int(num_bets)):
                         new_bet=Bet()
                         new_bet.auto_generate_bet()
                         ticket.bets.append(new_bet)
-                    
+                    clear_screen()
                     console.rule("Your Bets", style="bold yellow")
 
                     bets_table = table.Table(show_header=True, header_style="bold magenta")
@@ -150,7 +163,8 @@ def play_game():
                     bets_table.add_column("Stars", justify="left")
 
             
-                    for i in range(int(num_bets)):
+                    for i in track(range(int(num_bets)),description="A Processar..."):
+                        time.sleep(1) 
                         tickets_numbers='  '.join(str(x).ljust(3) for x in ticket.bets[i].bet_numbers)
                         tickets_stars='  '.join(str(x).ljust(3) for x in ticket.bets[i].bet_stars)
                         bets_table.add_row(str(i + 1), tickets_numbers,tickets_stars)
@@ -167,7 +181,7 @@ def play_game():
 if __name__ == '__main__':
     while True:
         principal_menu()
-        option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_principal.keys()]))
+        option = int(MyPrompt.ask("Select an option", choices=[str(key) for key in menu_principal.keys()]))
         if option == 1:
             play_game()
         
