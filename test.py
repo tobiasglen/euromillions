@@ -7,6 +7,10 @@ from rich.console import Console
 
 console = Console()
 
+class MyConfirm(prompt.Confirm):
+    choices=['s','n']
+
+MyConfirm = MyConfirm()
 @dataclass
 class Game:
     winning_numbers: list[int] = field(default_factory=list)
@@ -130,7 +134,8 @@ def play_game():
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         if option == 1:
             ticket=Ticket()
-            if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
+            #if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
+            if MyConfirm.ask("Do you want to auto-generate a random ticket?", default=True):
                     num_bets = prompt.Prompt.ask(f"Enter number of bets")
                     for _ in range(int(num_bets)):
                         new_bet=Bet()
