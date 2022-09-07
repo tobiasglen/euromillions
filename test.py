@@ -14,6 +14,12 @@ class Game:
     
     def generate_winning_numbers(self):
         self.winning_numbers,self.winning_stars=generate_valid_numbers()
+    
+    def check_if_user_won(self):
+        win_numbers=self.winning_numbers
+        win_stars=self.winning_stars
+        print(win_numbers)
+        print(win_stars)
 
 @dataclass
 class Bet:
@@ -22,6 +28,8 @@ class Bet:
     
     def auto_generate_bet(self):
         self.bet_numbers,self.bet_stars=generate_valid_numbers()
+    
+
 
 
 @dataclass
@@ -70,12 +78,6 @@ def clear_screen():
     else:
         _ = os.system('cls')
 
-def check_if_user_won():
-        win_numbers=Game.winning_numbers
-        win_stars=Game.winning_stars
-        for i in range(len(Ticket.bets)):
-            print(win_numbers)
-            print(win_stars)
 
 def principal_menu():
     menu_table = table.Table(show_header=True, header_style="bold magenta", title="Menu")
@@ -94,6 +96,11 @@ def tickets_menu():
     for key, value in menu_tickets.items():
         menu_table.add_row(str(key), value[0],value[1] )
     console.print(menu_table)
+
+def check_if_user_won(numbers,stars):
+    for i in range(len(numbers.bets)):
+        tickets_numbers ='  '.join(str(x).ljust(3) for x in i.bets[i].bet_numbers)
+        print(tickets_numbers)
 
 def play_game():
     game=Game()
@@ -126,8 +133,11 @@ def play_game():
                     console.print(bets_table)
                     console.line()
         
-        elif option == 2:  
-            return
+        #elif option == 2:  
+        #    return
+        elif option == 2:
+            console.print(check_if_user_won(ticket.bets[0].bet_numbers,ticket.bets[1].bet_stars))
+
 if __name__ == '__main__':
     while True:
         principal_menu()
@@ -138,9 +148,9 @@ if __name__ == '__main__':
         #        tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         #        ticket=Ticket()
         #        
+        #elif option == 2:
+            #console.print(game)
         elif option == 2:
-            console.print(check_if_user_won())
-        elif option == 3:
             exit()
 
 #bets=Bet()
