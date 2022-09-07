@@ -158,9 +158,7 @@ def play_game():
         elif option == 2:
             #exit()
             console.print(check_if_user_won(ticket,game))
-            #for i,v in enumerate(ticket.bets):
-            #    print(v.bet_numbers)
-            #console.print(ticket)
+            
 if __name__ == '__main__':
     while True:
         principal_menu()
