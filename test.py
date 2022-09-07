@@ -14,12 +14,7 @@ class Game:
     
     def generate_winning_numbers(self):
         self.winning_numbers,self.winning_stars=generate_valid_numbers()
-    
-    def check_if_user_won(self):
-        win_numbers=self.winning_numbers
-        win_stars=self.winning_stars
-        print(win_numbers)
-        print(win_stars)
+
 
 @dataclass
 class Bet:
@@ -97,10 +92,20 @@ def tickets_menu():
         menu_table.add_row(str(key), value[0],value[1] )
     console.print(menu_table)
 
-def check_if_user_won(numbers,stars):
-    for i in range(len(numbers.bets)):
-        tickets_numbers ='  '.join(str(x).ljust(3) for x in i.bets[i].bet_numbers)
+#It will check the winning Game (numbers and stars) against the ticket
+#multiple bets. If ticket bet numbers are in Game numbers. If ticket
+#bet stars are in Game stars. By the amount there we award prizes.
+
+def check_if_user_won(bet,game):
+    for i in range(len(bet)):
+        tickets_numbers='  '.join(str(x).ljust(3) for x in bet[i].bet_numbers)
         print(tickets_numbers)
+    
+    #for num in range(len(numbers)):
+    #    bet_numbers.append(numbers[num])
+    #for star in range(len(stars)):
+    #    bet_stars.append(numbers[star])
+    
 
 def play_game():
     game=Game()
@@ -136,8 +141,11 @@ def play_game():
         #elif option == 2:  
         #    return
         elif option == 2:
-            console.print(check_if_user_won(ticket.bets[0].bet_numbers,ticket.bets[1].bet_stars))
-
+            #exit()
+            console.print(check_if_user_won((ticket.bets),0))
+            #for i,v in enumerate(ticket.bets):
+            #    print(v.bet_numbers)
+            #console.print(ticket)
 if __name__ == '__main__':
     while True:
         principal_menu()
