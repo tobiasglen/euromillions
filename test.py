@@ -97,9 +97,13 @@ def tickets_menu():
 #bet stars are in Game stars. By the amount there we award prizes.
 
 def check_if_user_won(ticket,game):
-    for i in ticket.bets:
-        tickets_numbers='  '.join(str(x).ljust(3) for x in [i].bet_numbers)
-        print(tickets_numbers)
+    bet_numbers = 0
+    bet_stars = 0
+    for index,bet in enumerate(ticket.bets):
+        bet_numbers = bet.bet_numbers
+        bet_stars = bet.bet_stars
+        print(f"checking bet{index} for prizes:  {bet}")
+    return bet_numbers, bet_stars
     
     #for num in range(len(numbers)):
     #    bet_numbers.append(numbers[num])
