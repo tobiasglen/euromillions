@@ -22,9 +22,7 @@ class Bet:
     
     def auto_generate_bet(self):
         self.bet_numbers,self.bet_stars=generate_valid_numbers()
-        
-    def check_if_user_won(self):
-        return None
+
 
 @dataclass
 class Ticket:
@@ -72,6 +70,13 @@ def clear_screen():
     else:
         _ = os.system('cls')
 
+def check_if_user_won():
+        win_numbers=Game.winning_numbers
+        win_stars=Game.winning_stars
+        for i in range(len(Ticket.bets)):
+            print(win_numbers)
+            print(win_stars)
+
 def principal_menu():
     menu_table = table.Table(show_header=True, header_style="bold magenta", title="Menu")
     menu_table.add_column("ID", justify="center")
@@ -91,7 +96,8 @@ def tickets_menu():
     console.print(menu_table)
 
 def play_game():
-    Game.generate_winning_numbers
+    game=Game()
+    game.generate_winning_numbers()
     while True:
         tickets_menu()
         option = int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
@@ -118,10 +124,8 @@ def play_game():
                         bets_table.add_row(str(i + 1), tickets_numbers,tickets_stars)
 
                     console.print(bets_table)
-                    #console.line()
-
-
-
+                    console.line()
+        
         elif option == 2:  
             return
 if __name__ == '__main__':
@@ -134,8 +138,9 @@ if __name__ == '__main__':
         #        tickets=int(prompt.Prompt.ask("Select an option", choices=[str(key) for key in menu_tickets.keys()]))
         #        ticket=Ticket()
         #        
-        
         elif option == 2:
+            console.print(check_if_user_won())
+        elif option == 3:
             exit()
 
 #bets=Bet()
