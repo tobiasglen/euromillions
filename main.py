@@ -8,16 +8,44 @@ from rich.console import Console
 console = Console()
 
 
+def validate_bet_numbers(try_bet_number, temp_bet_dict):
+    # Perform validation on the bet numbers
+    # It must be an integer between 1 and 50 and must be unique
+    if not try_bet_number.isdigit():
+        raise ValueError("Bet number must be an integer")
+    if try_bet_number in temp_bet_dict["bet_numbers"]:
+        raise ValueError("Bet number already exists")
+    if int(try_bet_number) < 1 or int(try_bet_number) > 50:
+        raise ValueError("Bet number must be between 1 and 50")
+    temp_bet_dict["bet_numbers"].append(try_bet_number)
+    return temp_bet_dict
+
+
+def validate_bet_stars(try_bet_star, temp_bet_dict):
+    # Perform validation on the bet stars
+    # It must be between 1 and 12 and must be unique
+    if not try_bet_star.isdigit():
+        raise ValueError("Bet star must be an integer")
+    if try_bet_star in temp_bet_dict["bet_stars"]:
+        raise ValueError("Bet star already exists")
+    if int(try_bet_star) < 1 or int(try_bet_star) > 12:
+        raise ValueError("Bet star must be between 1 and 12")
+    temp_bet_dict["bet_stars"].append(try_bet_star)
+    return temp_bet_dict
+
 
 class Ticket:
-    def __init__(self, generate_winning_numbers=True):
+    def __init__(self, generate_winning_numbers=True, number_of_bets=1):
         self.bet_numbers = []
         self.bet_stars = []
         self.winning_numbers = []
         self.winning_stars = []
+        self.number_of_bets = number_of_bets
         # Generate the winning numbers when the ticket is created (default)
         if generate_winning_numbers:
             self.generate_winning_numbers()
+
+        self.all_bets = []
 
 
     def generate_winning_numbers(self, force_win=False):
@@ -25,8 +53,8 @@ class Ticket:
         # If force_win is True then it will set the winning numbers to one of the bet numbers otherwise it will generate random numbers
         if force_win:
             # Set the winning numbers to one of the bet numbers
-            self.winning_numbers = self.bet_numbers[0]
-            self.winning_stars = self.bet_stars[0]
+            self.winning_numbers = self.all_bets[0]["bet_numbers"]
+            self.winning_stars = self.all_bets[0]["bet_stars"]
         else:
             # Generate the winning numbers
             while len(self.winning_numbers) < 5:
@@ -43,56 +71,34 @@ class Ticket:
         # TODO: not sure how this is calculated
         return None
 
-    def insert_bet_numbers(self, bet_number):
-        # Perform validation on the bet numbers
-        # It must be an integer between 1 and 50 and must be unique
-        if not bet_number.isdigit():
-            raise ValueError("Bet number must be an integer")
-        if bet_number in self.bet_numbers:
-            raise ValueError("Bet number already exists")
-        if int(bet_number) < 1 or int(bet_number) > 50:
-            raise ValueError("Bet number must be between 1 and 50")
-        self.bet_numbers.append(bet_number)
-
-    def insert_bet_stars(self, bet_star):
-        # Perform validation on the bet stars
-        # It must be between 1 and 12 and must be unique
-        if bet_star in self.bet_stars:
-            raise ValueError("Bet star already exists")
-        if bet_star < 1 or bet_star > 12:
-            raise ValueError("Bet star must be between 1 and 12")
-        self.bet_stars.append(bet_star)
-
     def auto_generate_bet(self):
         # This method will generate 5 unique random numbers between 1 and 50 and append them to the bet_numbers list
-
         # Since a ticket can have multiple bets we can generate a number between 1 and 5 for the number of bets
-        number_of_bets = random.randint(2, 5)
+        self.number_of_bets = random.randint(2, 5)
 
-        for _ in range(number_of_bets):
-            # Generate the bet numbers
-            temp_bet_array = []
-            while len(temp_bet_array) < 5:
-                temp_bet = random.randint(1, 50)
-                if temp_bet not in temp_bet_array:
-                    temp_bet_array.append(temp_bet)
+        for _ in range(self.number_of_bets):
+            temp_bet_dict = {
+                "bet_numbers": [],
+                "bet_stars": []
+            }
 
-            self.bet_numbers.append(temp_bet_array)
+            while len(temp_bet_dict["bet_numbers"]) < 5:
+                temp_number = random.randint(1, 50)
+                if temp_number not in temp_bet_dict["bet_numbers"]:
+                    temp_bet_dict["bet_numbers"].append(temp_number)
 
-            # Generate the bet stars
-            temp_star_array = []
-            while len(temp_star_array) < 2:
+            while len(temp_bet_dict["bet_stars"]) < 2:
                 temp_star = random.randint(1, 12)
-                if temp_star not in temp_star_array:
-                    temp_star_array.append(temp_star)
+                if temp_star not in temp_bet_dict["bet_stars"]:
+                    temp_bet_dict["bet_stars"].append(temp_star)
 
-            self.bet_stars.append(temp_star_array)
+            self.all_bets.append(temp_bet_dict)
 
-    def get_bet_numbers(self):
-        return self.bet_numbers
+    def get_all_bets(self):
+        return self.all_bets
 
-    def get_bet_stars(self):
-        return self.bet_stars
+    def set_number_of_bets(self, number_of_bets):
+        self.number_of_bets = number_of_bets
 
     def __str__(self):
         # This is just a helper method to print the ticket. Not really needed
@@ -102,7 +108,6 @@ class Ticket:
 
 
 initial_menu = {1: 'Make Ticket', 2: 'Exit'}
-
 
 
 
@@ -136,15 +141,40 @@ if __name__ == '__main__':
             if prompt.Confirm.ask("Do you want to auto-generate a random ticket?", default=True):
                 ticket.auto_generate_bet()
             else:
-                # Manually prompt the user to enter the numbers
-                console.print("Enter numbers below:", style="bold yellow")
-                while len(ticket.get_bet_numbers()) < 5:
-                    bet_number = prompt.Prompt.ask(f"Enter number {len(ticket.get_bet_numbers()) + 1}")
-                    try:
-                        ticket.insert_bet_numbers(bet_number)
-                    except ValueError as e:
-                        console.print(e, style="bold red")
-                        continue
+                # Ask the user for how many bets they want to make
+                if prompt.Confirm.ask("Do you want to make more than 1 bet?", default=False):
+                    number_of_bets = int(prompt.Prompt.ask("How many bets do you want to make?", choices=[str(i) for i in range(1, 6)]))
+                    ticket.set_number_of_bets(number_of_bets)
+
+                for _ in range(ticket.number_of_bets):
+                    temp_bet_dict = {
+                        "bet_numbers": [],
+                        "bet_stars": []
+                    }
+                    # Manually prompt the user to enter the numbers
+                    console.print("Enter bet numbers below:", style="bold yellow")
+                    while len(temp_bet_dict["bet_numbers"]) < 5:
+                        bet_number = prompt.Prompt.ask(f"Enter number {len(temp_bet_dict['bet_numbers']) + 1}")
+                        try:
+                            temp_bet_dict = validate_bet_numbers(bet_number, temp_bet_dict)
+                        except ValueError as e:
+                            console.print(e, style="bold red")
+                            continue
+
+                    # Now prompt the user to enter the stars
+                    console.print("\nEnter bet stars below:", style="bold yellow")
+                    while len(temp_bet_dict["bet_stars"]) < 2:
+                        bet_star = prompt.Prompt.ask(f"Enter star {len(temp_bet_dict['bet_stars']) + 1}")
+                        try:
+                            temp_bet_dict = validate_bet_stars(bet_star, temp_bet_dict)
+                        except ValueError as e:
+                            console.print(e, style="bold red")
+                            continue
+
+                    ticket.all_bets.append(temp_bet_dict)
+
+
+
 
             console.rule("Your Bets", style="bold yellow")
 
@@ -154,12 +184,11 @@ if __name__ == '__main__':
             bets_table.add_column("Stars", justify="left")
 
             # Get the bet numbers and stars
-            bet_numbers = ticket.get_bet_numbers()
-            bet_stars = ticket.get_bet_stars()
+            all_bets = ticket.get_all_bets()
 
             # Loop through the bet numbers and stars and print them
-            for i in range(len(bet_numbers)):
-                bets_table.add_row(str(i + 1), str(bet_numbers[i]), str(bet_stars[i]))
+            for i in range(len(all_bets)):
+                bets_table.add_row(str(i + 1), str(all_bets[i]['bet_numbers']), str(all_bets[i]['bet_stars']))
 
             console.print(bets_table)
             console.line()
